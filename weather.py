@@ -96,21 +96,38 @@ def parse_weekly_forecast(data):
 
 def export_weather_csv(export, data_current, data_forecast):
 	if export:
-		with open("weathercurrent.csv", "w") as file:
-			writer = csv.DictWriter(file, fieldnames=["temperature", "windspeed", "winddirection", "weathercode", "rel_humidity", "visibility", "feels_like", "maxtemp", "mintemp", "total_precip"])
-			writer.writeheader()
-			writer.writerow({
-				"temperature": data_current["temperature"], 
-				"windspeed": data_current["windspeed"], 
-				"winddirection": data_current["winddirection"], 
-				"weathercode": data_current["weathercode"], 
-				"rel_humidity": data_current["rel_humidity"], 
-				"visibility": data_current["visibility"], 
-				"feels_like": data_current["feels_like"], 
-				"maxtemp": data_current["maxtemp"], 
-				"mintemp": data_current["mintemp"], 
-				"total_precip": data_current["total_precip"]})
+		try:
+			with open("weathercurrent.csv", "w") as file:
+				writer = csv.DictWriter(file, fieldnames=["temperature", "windspeed", "winddirection", "weathercode", "rel_humidity", "visibility", "feels_like", "maxtemp", "mintemp", "total_precip"])
+				writer.writeheader()
+				writer.writerow({
+					"temperature": data_current["temperature"], 
+					"windspeed": data_current["windspeed"], 
+					"winddirection": data_current["winddirection"], 
+					"weathercode": data_current["weathercode"], 
+					"rel_humidity": data_current["rel_humidity"], 
+					"visibility": data_current["visibility"], 
+					"feels_like": data_current["feels_like"], 
+					"maxtemp": data_current["maxtemp"], 
+					"mintemp": data_current["mintemp"], 
+					"total_precip": data_current["total_precip"]})
+			
+			with open("weatherforecast.csv", "w") as file:
+				writer = csv.DictWriter(file, fieldnames=["day", "maxtemp", "mintemp", "weathercode", "precip"])
+				writer.writeheader()
+				
+				for day in data_forecast:
+					writer.writerow({
+						"day": day["day"],
+						"maxtemp": day["maxtemp"],
+						"mintemp": day["mintemp"],
+						"precip": day["precipitation"]
+					})
+
 			print("Weather data sucessfully exported to CSV...")
+		except:
+			print("Failed to export CSV. Check your API request.")
+		
 	return
 
 
