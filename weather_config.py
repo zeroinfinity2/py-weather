@@ -11,3 +11,6 @@ ipaddress = ""
 
 #If you want to export data as a csv (comma seperated value) raw text file, set to True. Otherwise, set to False
 export_csv = True
+
+#Rainmeter control. Send command-line bangs to Rainmeter. Required for automated Rainmeter weather updates. Set to True/False.
+rainmeter_ctrl = True
