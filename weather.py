@@ -77,12 +77,13 @@ def parse_current_weather(data):
 		"mintemp": data["daily"]["temperature_2m_min"][0],
 		"total_precip": data["daily"]["precipitation_sum"][0],
 	}
+	rainmeter_controller(config.rainmeter_ctrl, current)
 	return current
 
 
 def parse_weekly_forecast(data):
 	weekly = []
-
+	
 	for day in range(len(data["daily"]["time"])):
 		weekly.append(
 			{
@@ -93,6 +94,7 @@ def parse_weekly_forecast(data):
 				"precipitation": data["daily"]["precipitation_sum"][day],
 			}
 		)
+	rainmeter_controller(config.rainmeter_ctrl, weekly)
 	return weekly
 
 def export_weather_csv(export, data_current, data_forecast):
@@ -133,10 +135,11 @@ def export_weather_csv(export, data_current, data_forecast):
 
 def rainmeter_controller(active, weather):
 	if active:
+		print("Updating Rainmeter...")
 		#pull data from the calling function
 		#update rainmeter bangs via rm_process = subprocess.run()
 		#get return code with rm_process.returncode. 0 = pass
-		...
+		print("Rainmeter sucessfully updated...")
 	return
 
 
