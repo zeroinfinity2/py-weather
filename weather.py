@@ -4,6 +4,7 @@ import datetime
 import time
 import weather_config as config
 import csv
+import subprocess
 
 
 def fetch_ip(ip):
@@ -130,6 +131,14 @@ def export_weather_csv(export, data_current, data_forecast):
 		
 	return
 
+def rainmeter_controller(active, weather):
+	if active:
+		#pull data from the calling function
+		#update rainmeter bangs via rm_process = subprocess.run()
+		#get return code with rm_process.returncode. 0 = pass
+		...
+	return
+
 
 def main():
 	match config.preferred_scale:
@@ -139,14 +148,11 @@ def main():
 			scale = {"Temp": "celsius", "Wind": "kmh", "Precip": "mm", "Dist": "km"}
 
 	current_epoch = int(round(time.time()))
+
 	location = fetch_ip(config.ipaddress)
-
 	forecast_data = fetch_weatherdata(location, config.update_time, current_epoch, scale)
-
 	current_weather = parse_current_weather(forecast_data)
-
 	weekly_forecast = parse_weekly_forecast(forecast_data)
-	
 	export_csv = export_weather_csv(config.export_csv, current_weather, weekly_forecast)
 
 
