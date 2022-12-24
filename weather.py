@@ -3,6 +3,7 @@ import json
 import datetime
 import time
 import weather_config as config
+import csv
 
 
 def fetch_ip(ip):
@@ -93,6 +94,25 @@ def parse_weekly_forecast(data):
 		)
 	return weekly
 
+def export_weather_csv(export, data_current, data_forecast):
+	if export:
+		with open("weathercurrent.csv", "w") as file:
+			writer = csv.DictWriter(file, fieldnames=["temperature", "windspeed", "winddirection", "weathercode", "rel_humidity", "visibility", "feels_like", "maxtemp", "mintemp", "total_precip"])
+			writer.writeheader()
+			writer.writerow({
+				"temperature": data_current["temperature"], 
+				"windspeed": data_current["windspeed"], 
+				"winddirection": data_current["winddirection"], 
+				"weathercode": data_current["weathercode"], 
+				"rel_humidity": data_current["rel_humidity"], 
+				"visibility": data_current["visibility"], 
+				"feels_like": data_current["feels_like"], 
+				"maxtemp": data_current["maxtemp"], 
+				"mintemp": data_current["mintemp"], 
+				"total_precip": data_current["total_precip"]})
+			print("Weather data sucessfully exported to CSV...")
+	return
+
 
 def main():
 	match config.preferred_scale:
@@ -104,14 +124,13 @@ def main():
 	current_epoch = int(round(time.time()))
 	location = fetch_ip(config.ipaddress)
 
-	forecast_data = fetch_weatherdata(location, config.update_time, current_epoch, scale
-	)
+	forecast_data = fetch_weatherdata(location, config.update_time, current_epoch, scale)
 
 	current_weather = parse_current_weather(forecast_data)
 
 	weekly_forecast = parse_weekly_forecast(forecast_data)
-
-	# export_weather_csv()
+	
+	export_csv = export_weather_csv(config.export_csv, current_weather, weekly_forecast)
 
 
 if __name__ == "__main__":
