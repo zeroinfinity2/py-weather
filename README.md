@@ -1,2 +1,2 @@
-# py-weather-extention
-A weather extension for rainmeter, written in Python
+# py-weather
+A python weather script, originally writtten for Rainmeter.
