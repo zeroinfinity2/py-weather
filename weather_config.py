@@ -8,3 +8,6 @@ update_time = 3600
 
 #If you use a VPN, put your actual IP address in the quotes. Otherwise, leave it blank to automatically generate.
 ipaddress = ""
+
+#If you want to export data as a csv (comma seperated value) raw text file, set to True. Otherwise, set to False
+export_csv = True
