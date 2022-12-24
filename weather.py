@@ -7,9 +7,7 @@ import weather_config as config
 
 def fetch_ip(ip):
 	try:
-		get_location = requests.get(
-			f"http://ip-api.com/json/{ip}?fields=country,region,regionName,city,zip,lat,lon,timezone,isp,org,query"
-		).json()
+		get_location = requests.get(f"http://ip-api.com/json/{ip}?fields=country,region,regionName,city,zip,lat,lon,timezone,isp,org,query").json()		
 
 		location = {
 			"country": get_location["country"],
@@ -47,12 +45,9 @@ def fetch_weatherdata(location, update_time, current_epoch, scale):
 
 		try:
 			get_forecast = requests.get(
-				f"https://api.open-meteo.com/v1/forecast?latitude={location['latitude']}&longitude={location['longitude']}&current_weather=true&temperature_unit={scale['Temp']}&hourly=temperature_2m,relativehumidity_2m,visibility,apparent_temperature,windspeed_10m&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_sum&temperature_unit={scale['Temp']}&windspeed_unit={scale['Wind']}&precipitation_unit={scale['Precip']}&timeformat=unixtime&timezone=auto"
-			).json()
+				f"https://api.open-meteo.com/v1/forecast?latitude={location['latitude']}&longitude={location['longitude']}&current_weather=true&temperature_unit={scale['Temp']}&hourly=temperature_2m,relativehumidity_2m,visibility,apparent_temperature,windspeed_10m&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_sum&temperature_unit={scale['Temp']}&windspeed_unit={scale['Wind']}&precipitation_unit={scale['Precip']}&timeformat=unixtime&timezone=auto").json()
 		except:
-			print(
-				"There was an error fetching your api request. Check if the api is working or the location is correct."
-			)
+			print("There was an error fetching your api request. Check if the api is working or the location is correct.")
 			print("Attempting to read from cache...")
 
 		with open("weather_cache.json", "w") as file:
@@ -109,14 +104,12 @@ def main():
 	current_epoch = int(round(time.time()))
 	location = fetch_ip(config.ipaddress)
 
-	forecast_data = fetch_weatherdata(
-		location, config.update_time, current_epoch, scale
+	forecast_data = fetch_weatherdata(location, config.update_time, current_epoch, scale
 	)
 
 	current_weather = parse_current_weather(forecast_data)
 
 	weekly_forecast = parse_weekly_forecast(forecast_data)
-	print(weekly_forecast)
 
 	# export_weather_csv()
 
