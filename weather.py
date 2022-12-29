@@ -5,20 +5,21 @@ import time
 import weather_config as config
 import csv
 import subprocess
+import configparser
 
 class Weather:
-	def __init__(self, scale, update_time, ipaddress, export_csv, rainmeter_ctrl, debug):
-		match scale:
+	def __init__(self, config):
+		match config["preferred_scale"]:
 			case "imperial": 
 				self.scale = {"Temp": "fahrenheit","Wind": "mph","Precip": "inch","Dist": "miles",}		
 			case _:
 				self.scale = {"Temp": "celsius", "Wind": "kmh", "Precip": "mm", "Dist": "km"}
 
-		self.update_time = update_time
-		self.ipaddress = ipaddress
-		self.export_csv = export_csv
-		self.rainmeter_ctrl = rainmeter_ctrl
-		self.debug = debug
+		self.update_time = int(config["update_time"])
+		self.ipaddress = str(config["ipaddress"])
+		self.export_csv = bool(config["export_csv"])
+		self.rainmeter_ctrl = bool(config["rainmeter_ctrl"])
+		self.debug = bool(config["debug_mode"])
 		self.current_epoch = int(round(time.time()))
 		self.debug_message(14)
 
@@ -186,14 +187,24 @@ class Weather:
 		
 			return print(self.debug_messages[index])
 		return
+
+def read_config(file_path):
+	c_values={}
+	config = configparser.ConfigParser()
+	config.read(file_path)
+	for section in config.sections():
+		for key in config[section]:
+			c_values.update({key: config[section][key]})
+	return c_values
 			
 	
 
 def main():
-	forecast = Weather(config.preferred_scale, config.update_time, config.ipaddress, config.export_csv, config.rainmeter_ctrl, config.debug_mode)
+	config = read_config("weather_config.ini")
+	forecast= Weather(config)
 	forecast.fetch_all()
 	forecast.export()
-
+	
 
 if __name__ == "__main__":
 	main()
