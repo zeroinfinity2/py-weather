@@ -14,3 +14,6 @@ export_csv = True
 
 #Rainmeter control. Send command-line bangs to Rainmeter. Required for automated Rainmeter weather updates. Set to True/False.
 rainmeter_ctrl = True
+
+#True/False values only. Debug mode enables verbose console printing.
+debug_mode = True
