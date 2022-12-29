@@ -8,12 +8,6 @@ import configparser
 
 class Weather:
 	def __init__(self, config):
-		match config["preferred_scale"]:
-			case "imperial": 
-				self.scale = {"Temp": "fahrenheit","Wind": "mph","Precip": "inch","Dist": "miles",}		
-			case _:
-				self.scale = {"Temp": "celsius", "Wind": "kmh", "Precip": "mm", "Dist": "km"}
-
 		self.update_time = int(config["update_time"])
 		self.ipaddress = str(config["ipaddress"])
 		self.export_csv = bool(config["export_csv"])
@@ -21,6 +15,14 @@ class Weather:
 		self.debug = bool(config["debug_mode"])
 		self.current_epoch = int(round(time.time()))
 		self.debug_message(14)
+		match config["preferred_scale"]:
+			case "imperial": 
+				self.scale = {"Temp": "fahrenheit","Wind": "mph","Precip": "inch","Dist": "miles",}
+				self.debug_message(15)	
+			case _:
+				self.scale = {"Temp": "celsius", "Wind": "kmh", "Precip": "mm", "Dist": "km"}
+				self.debug_message(16)
+		self.debug_message(17)
 
 	def fetch_ip(self):
 		try:
@@ -182,7 +184,10 @@ class Weather:
 				"Failed to export CSV. Check your API request.",
 				"Updating Rainmeter...",
 				"Rainmeter sucessfully updated...",
-				"Alert! Debug Mode enabled...")
+				"Alert! Debug Mode enabled... ",
+				"Measurement scale set to imperial...",
+				"Measurement scale set to metric...",
+				"Config successfully loaded...")
 		
 			return print(self.debug_messages[index])
 		return
@@ -197,7 +202,6 @@ def read_config(file_path):
 	return c_values
 			
 	
-
 def main():
 	config = read_config("weather_config.ini")
 	forecast= Weather(config)
