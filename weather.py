@@ -151,7 +151,7 @@ class Weather:
 	def rainmeter_controller(self):
 		if self.rainmeter_ctrl:
 			self.debug_message(12)
-			#pull data from the calling function
+			#gather relevant data
 			#update rainmeter bangs via rm_process = subprocess.run()
 			#get return code with rm_process.returncode. 0 = pass
 			self.debug_message(13)
