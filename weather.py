@@ -2,7 +2,6 @@ import requests
 import json
 import datetime
 import time
-import weather_config as config
 import csv
 import subprocess
 import configparser
