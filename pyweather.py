@@ -202,10 +202,6 @@ class Weather:
 
 			except:
 				self.debug_message(18)
-
-			#gather relevant data
-			#update rainmeter bangs via rm_process = subprocess.run()
-			#get return code with rm_process.returncode. 0 = pass
 			
 		return
 
